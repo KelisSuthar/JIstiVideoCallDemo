@@ -1,0 +1,51 @@
+Welcome To Jitsi Meet(Website used for this  - https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk)
+Git Example for Mobile is in this link -https://github.com/jitsi/jitsi-meet-sdk-samples
+
+
+TroubleShoots that might developer face
+
+1)Might face because of gradle implementation is not proper
+:app:writeDebugSigningConfigVersions
+
+to Solve use this
+    jcenter()//use This otherwise error will occur
+            maven {
+                url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"//todo - Implement this for jistsi View
+            }
+
+2)App Crash
+    if developer don't use this than app might crash
+        val options: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
+                        .setServerURL(URL("https://meet.jit.si"))
+                        .setRoom(YOUR ROOM NAME)
+                        .setAudioMuted(false)
+                        .setVideoMuted(false)
+                        .setAudioOnly(false)
+                        .setConfigOverride("requireDisplayName", true)
+                        .build()
+                    launch(this, options)//us this line to prevent crash and launch jitsi
+3)For using Callbacks
+Use broadcasted events
+
+    Broadcast Events
+        -CONFERENCE_JOINED
+        -CONFERENCE_TERMINATED
+        -CONFERENCE_WILL_JOIN
+        -AUDIO_MUTED_CHANGED
+        -VIDEO_MUTED_CHANGED
+        -PARTICIPANT_JOINED
+        -PARTICIPANT_LEFT
+        -ENDPOINT_TEXT_MESSAGE_RECEIVED
+        -PARTICIPANTS_INFO_RETRIEVED
+        -CHAT_MESSAGE_RECEIVED
+        -CHAT_TOGGLED
+        -READY_TO_CLOSE
+
+    -Listening for broadcasted events(Code Is In Java But it can use in kotlin as well without any changes)
+         IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_JOINED.getAction());
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+
+                Intent muteBroadcastIntent = new Intent(BroadcastAction.Type.SET_AUDIO_MUTED.getAction());
+                muteBroadcastIntent.putExtra("muted", muted);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(muteBroadcastIntent);

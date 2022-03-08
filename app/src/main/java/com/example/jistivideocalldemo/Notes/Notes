@@ -1,0 +1,71 @@
+Welcome To Jitsi Meet(Website used for this  - https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-android-sdk)
+Git Example for Mobile is in this link -https://github.com/jitsi/jitsi-meet-sdk-samples
+
+steps For Implementing jitsi in app
+1)Implement maven in project(In build.gradle)
+    allprojects {
+        repositories {
+            google()
+            jcenter()
+            maven {
+                url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"
+            }
+        }
+    }
+    Note - if android version is bumblebee or more than implement this in setting.gradle
+2)Implement dependency in build.gradle file
+    dependencies {
+        // (other dependencies)
+        implementation ('org.jitsi.react:jitsi-meet-sdk:3.+') { transitive = true }
+    }
+3)Make Sure this is in build.gradle
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+5)In Kt or Java file(If you don't want use floating video view than don't use this)
+    for Kotlin = class MainActivity : JitsiMeetActivity() {
+                   {
+    for Java  = public class MainActivity extends JitsiMeetActivity {
+                }
+6)Launch jitsi using this //todo-to start and join jitsi
+    for Java  = JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(new URL("https://meet.jit.si"))
+                    .setRoom(YOUR ROOM NAME)
+                    .setAudioMuted(false)
+                    .setVideoMuted(false)
+                    .setAudioOnly(false)
+                    .setWelcomePageEnabled(false)
+                    .setConfigOverride("requireDisplayName", true)
+                    .build();
+    for Kotlin = val options: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
+                                 .setServerURL(URL("https://meet.jit.si"))
+                                 .setRoom(YOUR ROOM NAME)
+                                 .setAudioMuted(false)1
+                                 .setVideoMuted(false)
+                                 .setAudioOnly(false)
+                                 .setConfigOverride("requireDisplayName", true)
+                                 .build()
+                             launch(this, options)
+7)If needed to use different feature flags please refer this - https://jitsi.github.io/handbook/docs/dev-guide/mobile-feature-flags
+    for Ex =  val defaultOptions = JitsiMeetConferenceOptions.Builder()
+                          .setServerURL(serverURL)
+                           //Different features flags can be set
+                           .setFeatureFlag("toolbox.enabled", false)
+                           .setFeatureFlag("filmstrip.enabled", false)
+                          .setFeatureFlag("welcomepage.enabled", false)
+                          .build()
+8)For callback
+    JitsiMeetViewListener is use for callbacks like
+        -onActivityResult(...)
+        -onBackPressed()
+        -onHostDestroy(...)
+        -onHostResume(...)
+        -onHostStop(...)
+        -onNewIntent(...)
+        -onRequestPermissionsResult(...)
+        -onUserLeaveHint()
+        -onConferenceJoined
+        -OnConferenceTerminated
+        -onConferenceWillJoin
+    How ever JitsiMeetViewListener is deprecated according to jitsi notes

@@ -1,0 +1,21 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()//use This otherwise error will occur
+        maven {
+            url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases"//todo - Implement this for jistsi View
+        }
+    }
+}
+rootProject.name = "JIstiVideoCallDemo"
+include ':app'
